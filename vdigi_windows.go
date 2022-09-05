@@ -107,7 +107,6 @@ var (
 	// Library
 	libuser32   *windows.LazyDLL
 	libkernel32 *windows.LazyDLL
-	libtest     *windows.LazyDLL
 
 	// Functions
 	createSyntheticPointerDevice  *windows.LazyProc
@@ -117,7 +116,6 @@ var (
 
 	// Error Function
 	getLastErr *windows.LazyProc
-	tstStru    *windows.LazyProc
 )
 
 func init() {
@@ -223,9 +221,9 @@ func clearDigiFlags(pointerTypeInfo *POINTER_TYPE_INFO, flags PEN_FLAGS) {
 	pointerTypeInfo.penInfo.pointerInfo.pointerFlags = POINTER_FLAGS(flags)
 }
 
-func cleanDigiFlags(pointerTypeInfo *POINTER_TYPE_INFO) {
-	pointerTypeInfo.penInfo.pointerInfo.pointerFlags = 0
-}
+// func cleanDigiFlags(pointerTypeInfo *POINTER_TYPE_INFO) {
+// 	pointerTypeInfo.penInfo.pointerInfo.pointerFlags = 0
+// }
 
 func setDigiFlags(pointerTypeInfo *POINTER_TYPE_INFO, flags PEN_FLAGS) {
 	pointerTypeInfo.penInfo.pointerInfo.pointerFlags |= POINTER_FLAGS(flags)
