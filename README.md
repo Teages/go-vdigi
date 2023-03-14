@@ -25,7 +25,7 @@ func main() {
 	}
 
 	// Destroy the vdigi, or will close with the program
-	d.Destory()
+	d.Destroy()
 }
 ```
 

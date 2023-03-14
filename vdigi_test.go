@@ -17,6 +17,6 @@ func TestPlatfrom(t *testing.T) {
 		t.Fail()
 	}
 
-	// Destory the digi
-	d.Destory()
+	// Destroy the digi
+	d.Destroy()
 }

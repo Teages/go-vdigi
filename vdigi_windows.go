@@ -188,7 +188,7 @@ func (device *PointerDevice) Update(x, y int32, pressure uint32) error {
 	return sendDigiData(*device)
 }
 
-func (device *PointerDevice) Destory() bool {
+func (device *PointerDevice) Destroy() bool {
 	ans, _, _ := destroySyntheticPointerDevice.Call(uintptr(device.device))
 	return ans != 0
 }

@@ -14,6 +14,6 @@ func (p Pointer) Update(x, y int32, pressure uint32) error {
 	return p.d.Update(x, y, pressure)
 }
 
-func (p Pointer) Destory() {
-	p.d.Destory()
+func (p Pointer) Destroy() {
+	p.d.Destroy()
 }
