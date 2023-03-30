@@ -27,8 +27,8 @@ type _Screen struct {
 }
 
 type ScreenData struct {
-	width  int
-	height int
+	Width  int
+	Height int
 }
 
 var (
