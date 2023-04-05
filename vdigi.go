@@ -2,6 +2,8 @@ package vdigi
 
 import (
 	"errors"
+	"fmt"
+	"strconv"
 )
 
 type Pointer struct {
@@ -27,6 +29,7 @@ type _Screen struct {
 }
 
 type ScreenData struct {
+	Uid    string
 	Width  int
 	Height int
 }
@@ -99,10 +102,29 @@ func (s _VScreensData) GetScreenCount() int {
 
 func (s _VScreensData) GetScreen(screenId int) (ScreenData, error) {
 	if screenId < 0 || screenId > s.count {
-		return ScreenData{0, 0}, errors.New("Wrong screenId")
+		return ScreenData{"", 0, 0}, errors.New("Wrong screenId")
 	}
 	return ScreenData{
+		getScreenUid(s.screens[screenId].offsetX, s.screens[screenId].offsetY),
 		s.screens[screenId].width,
 		s.screens[screenId].height,
 	}, nil
+}
+
+func (s _VScreensData) GetScreenIdByUid(screenUid string) (int, error) {
+	for i, screen := range s.screens {
+		uid := getScreenUid(screen.offsetX, screen.offsetY)
+		if uid == screenUid {
+			return i, nil
+		}
+	}
+	return 0, errors.New("Wrong screenId")
+}
+
+func getScreenUid(x, y int) string {
+	return fmt.Sprintf("%03s%03s",
+		strconv.FormatInt(int64(x), 16),
+		strconv.FormatInt(int64(y), 16),
+	)
+
 }
