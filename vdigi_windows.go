@@ -334,6 +334,11 @@ func nativeGetScreens() _VScreensData {
 			fixY = offsetY
 		}
 
+		// Skip screens which have 0 width or height
+		if width == 0 || height == 0 {
+			continue
+		}
+
 		screen := _Screen{
 			id, width, height, scaleX, scaleY, offsetX, offsetY,
 		}
