@@ -31,6 +31,9 @@ var (
 	_POINTER_FLAG_CAPTURECHANGED = _POINTER_FLAGS(0x00200000) // Lost capture
 	_POINTER_FLAG_HASTRANSFORM   = _POINTER_FLAGS(0x00400000) // Input has a transform associated with it
 
+	// DISPLAY
+	_DISPLAY_DEVICE_ATTACHED_TO_DESKTOP = _POINTER_FLAGS(0x00000001) // The device is part of the desktop.
+
 	// PEN_FLAGS
 	_PEN_FLAG_NONE     = _PEN_FLAGS(0x00000000) // Default
 	_PEN_FLAG_BARREL   = _PEN_FLAGS(0x00000001) // The barrel button is pressed
@@ -298,22 +301,28 @@ func sendDigiData(device _PointerDevice) error {
 	return nil
 }
 
-func nativeGetScreenCount() int {
-	ans, _, _ := getSystemMetrics.Call(_SM_CMONITORS)
-	return int(ans)
-}
-
 func nativeGetScreens() _VScreensData {
-	count := nativeGetScreenCount()
 	var screens []_Screen
 
 	fixX := 0
 	fixY := 0
 
-	for id := 0; id < count; id++ {
+	// https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-enumdisplaydevicesa#remarks
+	for id := 0; ; id++ {
 		var device _DISPLAY_DEVICE
 		device.Cb = uint32(uint64(unsafe.Sizeof(device)))
-		enumDisplayDevices.Call(uintptr(0), uintptr(id), uintptr(unsafe.Pointer(&device)), uintptr(0))
+		ans, _, _ := enumDisplayDevices.Call(uintptr(0), uintptr(id), uintptr(unsafe.Pointer(&device)), uintptr(0))
+		// To query all display devices in the current session, call this function in a loop,
+		// starting with iDevNum set to 0, and incrementing iDevNum until the function fails.
+		if ans == 0 {
+			break
+		}
+		// To select all display devices in the desktop,
+		// use only the display devices that have
+		// the DISPLAY_DEVICE_ATTACHED_TO_DESKTOP flag in the DISPLAY_DEVICE structure.
+		if (device.StateFlags & uint32(_DISPLAY_DEVICE_ATTACHED_TO_DESKTOP)) == 0 {
+			continue
+		}
 
 		var deviceMode _DEVMODE
 		deviceMode.Size = uint16(uint64(unsafe.Sizeof(deviceMode)))
@@ -332,11 +341,6 @@ func nativeGetScreens() _VScreensData {
 		}
 		if offsetY < fixY {
 			fixY = offsetY
-		}
-
-		// Skip screens which have 0 width or height
-		if width == 0 || height == 0 {
-			continue
 		}
 
 		screen := _Screen{
