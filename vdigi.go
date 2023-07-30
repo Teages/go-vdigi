@@ -126,5 +126,4 @@ func getScreenUid(x, y int) string {
 		strconv.FormatInt(int64(x), 16),
 		strconv.FormatInt(int64(y), 16),
 	)
-
 }

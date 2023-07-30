@@ -368,11 +368,9 @@ func nativeGetScreens() _VScreensData {
 		screens[id] = screen
 	}
 
-	fmt.Printf("%d, %d\n", fixX, fixY)
-
-	fmt.Printf("%d, %d\n", totalWidth, totalHeight)
-
-	fmt.Printf("%+v\n\n", screens)
+	// fmt.Printf("%d, %d\n", fixX, fixY)
+	// fmt.Printf("%d, %d\n", totalWidth, totalHeight)
+	// fmt.Printf("%+v\n\n", screens)
 
 	return _VScreensData{
 		len(screens), screens, totalHeight, totalWidth,
