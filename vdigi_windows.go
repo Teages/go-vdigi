@@ -348,7 +348,7 @@ func nativeGetScreens() _VScreensData {
 	totalWidth := 0
 	totalHeight := 0
 
-	for id := 0; id < count; id++ {
+	for id := 0; id < len(screens); id++ {
 		screen := screens[id]
 
 		screen.offsetX -= fixX
@@ -371,6 +371,6 @@ func nativeGetScreens() _VScreensData {
 	fmt.Printf("%+v\n\n", screens)
 
 	return _VScreensData{
-		count, screens, totalHeight, totalWidth,
+		len(screens), screens, totalHeight, totalWidth,
 	}
 }

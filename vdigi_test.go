@@ -25,7 +25,7 @@ func TestPlatfrom(t *testing.T) {
 		screen, _ := s.GetScreen(i)
 		fmt.Printf("Screen %d: %v\n", i, screen)
 	}
-	dd, _ := vdigi.CreatePointerForScreen(1)
+	dd, _ := vdigi.CreatePointerForScreen(0)
 	err = dd.Update(100, 100, 0)
 	if err != nil {
 		t.Log(err.Error())
