@@ -203,7 +203,7 @@ func (device *_PointerDevice) Create() {
 	clearDigiFlags(&device.pointerTypeInfo, _PEN_FLAGS(_POINTER_FLAG_INRANGE|_POINTER_FLAG_PRIMARY))
 }
 
-func (device *_PointerDevice) Update(x, y int32, pressure uint32) error {
+func (device *_PointerDevice) Update(x, y int32, pressure uint32, tiltX, tiltY int32) error {
 	if x < 0 {
 		x = 0
 	}
@@ -269,7 +269,7 @@ func setupDigiInfo(penInfo *_POINTER_PEN_INFO) {
 	penInfo.pointerInfo.ButtonChangeType = 0 // POINTER_CHANGE_NONE
 
 	penInfo.penFlags = _PEN_FLAG_NONE
-	penInfo.penMask = _PEN_MASK_PRESSURE
+	penInfo.penMask = _PEN_MASK_PRESSURE | _PEN_MASK_TILT_X | _PEN_MASK_TILT_Y
 	penInfo.pressure = 512
 	penInfo.rotation = 0
 	penInfo.tiltX = 0

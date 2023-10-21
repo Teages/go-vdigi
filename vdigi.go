@@ -69,8 +69,12 @@ func GetScreens() _VScreensData {
 }
 
 func (p Pointer) Update(x, y int32, pressure uint32) error {
+	return p.UpdateWithTilt(x, y, pressure, 0, 0)
+}
+
+func (p Pointer) UpdateWithTilt(x, y int32, pressure uint32, tiltX, tiltY int32) error {
 	if p.screenId < 0 {
-		return p.d.Update(x, y, pressure)
+		return p.d.Update(x, y, pressure, tiltX, tiltY)
 	}
 
 	screen := screensCache.screens[p.screenId]
@@ -85,6 +89,8 @@ func (p Pointer) Update(x, y int32, pressure uint32) error {
 		realX,
 		realY,
 		pressure,
+		tiltX,
+		tiltY,
 	)
 }
 
